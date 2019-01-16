@@ -1,0 +1,20 @@
+{
+  "name": "applosl/pao-pao-to",
+  "description": "PaoPaoTo Framework",
+  "type": "library",
+  "license": "BSD 3-Clause",
+  "authors": [
+    {
+      "name": "applosl",
+      "email": "applosl@163.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "PaoPaoTo\\": "src/"
+    }
+  }
+}
