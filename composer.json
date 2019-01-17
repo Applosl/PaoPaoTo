@@ -2,7 +2,7 @@
   "name": "applosl/pao-pao-to",
   "description": "PaoPaoTo Framework",
   "type": "library",
-  "license": "BSD 3-Clause",
+  "license": "BSD-3-Clause",
   "authors": [
     {
       "name": "applosl",
