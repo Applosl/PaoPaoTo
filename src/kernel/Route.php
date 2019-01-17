@@ -47,10 +47,10 @@ class Route {
         }
 
         // 检查是否含有对应的控制器
-        $controlClassName = '\\' . ucfirst($this->serviceName) . '\\' . ucfirst($this->controlName);
+        $controlClassName = '\\' . ucfirst($this->serviceName) . '\\Controller\\' . ucfirst($this->controlName);
 
         if (!class_exists($controlClassName)) {
-            throw new BadRequestException('找不到对应的控制名');
+            throw new BadRequestException('找不到对应的控制器名');
         }
 
         $this->controllerClass = new $controlClassName();
