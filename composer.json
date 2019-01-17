@@ -20,7 +20,8 @@
       "src/init.php"
     ],
     "psr-4": {
-      "PaoPaoTo\\": "src/"
+      "PaoPaoTo\\": "src/",
+      "App\\":"test/App/"
     }
   }
 }

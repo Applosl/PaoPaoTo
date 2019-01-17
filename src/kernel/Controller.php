@@ -18,7 +18,8 @@ class Controller {
 
     // TODO 为了简化其控制器的操作 这里可以简单将封装几个简单的Request的属性 考虑性能 看是否需要用引用
 
-    public function init() {
-
+    public function init($actionName) {
+        $this->actionName = $actionName;
+        $this->$actionName();
     }
 }

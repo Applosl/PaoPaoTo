@@ -20,10 +20,13 @@ use PaoPaoTo\kernel\Request\Request;
  */
 class PPT {
     private static $_instance = null; // 自生单例
-    protected $request = null; // 请求组件对象
+    /**
+     * @var Request
+     */
+    public $request = null; // 请求组件对象
     protected $route = null; // 路由对象
-    protected $response = null; // 响应组件对象
-    protected $session = null; // session组件(考虑是不是 变为可选配置项)
+    public $response = null; // 响应组件对象
+    public $session = null; // session组件(考虑是不是 变为可选配置项)
 
     /**
      * 由外部文件载入,需要检查其合法性，抑制错误异常
@@ -62,7 +65,6 @@ class PPT {
         // TODO 异常有框架异常 以及PHP本身的异常导致的 这里需要考虑如何处理
         try {
             $servicePath = $this->request->getServerPath();
-
             $this->route->generateServer($servicePath);
         } catch (\Exception $e) {
             print_r($e->getMessage());

@@ -31,7 +31,7 @@ class Route {
     public function generateServer($servicePath) {
         list($this->serviceName, $this->controlName, $this->actionName) = $servicePath;
         $this->checkPath();
-        $this->controllerClass->init();
+        $this->controllerClass->init($this->actionName);
     }
 
     /**
@@ -49,6 +49,7 @@ class Route {
         // 检查是否含有对应的控制器
         $controlClassName = '\\' . ucfirst($this->serviceName) . '\\Controller\\' . ucfirst($this->controlName);
 
+//        echo $controlClassName;exit;
         if (!class_exists($controlClassName)) {
             throw new BadRequestException('找不到对应的控制器名');
         }
