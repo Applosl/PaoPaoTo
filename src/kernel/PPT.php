@@ -8,6 +8,8 @@
 
 namespace PaoPaoTo\kernel;
 
+use PaoPaoTo\kernel\Request\Request;
+
 
 /**
  * PPT服务对象
@@ -46,6 +48,7 @@ class PPT {
     public function __construct($config = array()) {
         // TODO 检查config变量合法性
         $this->config = array_merge($this->config, $config); // merge config
+        $this->request = Request::getInstance();
     }
 
     public function parseConfig() {

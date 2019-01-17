@@ -21,6 +21,8 @@ class Request extends RequestAbstract implements oneInstance {
     protected $request = null; // request 参数
     protected $method = ''; // 请求方法参数
 
+    public $servicePath = ''; // 服务的路由路径
+
     /**
      * 解析http headers 参数
      */
@@ -97,6 +99,11 @@ class Request extends RequestAbstract implements oneInstance {
         }
 
         return isset($this->headers[$key]) ? $this->headers[$key] : $default;
+    }
+
+    // TODO 返回服务的路由
+    public function getServerPath(){
+
     }
 
     public function getBody() {
