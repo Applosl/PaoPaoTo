@@ -7,7 +7,5 @@
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-require_once dirname(TEST_ROOT) . DIRECTORY_SEPARATOR . 'src/init.php';
-
 $server = \PaoPaoTo\initServer(); // 初始化服务对象
 $server->serverResponse(); // 响应结果
