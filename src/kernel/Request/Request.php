@@ -101,9 +101,25 @@ class Request extends RequestAbstract implements oneInstance {
         return isset($this->headers[$key]) ? $this->headers[$key] : $default;
     }
 
-    // TODO 返回服务的路由
-    public function getServerPath(){
+    /**
+     * 返回服务的路由
+     * @return array [service,control,action]
+     */
+    public function getServerPath() {
+        $service = $this->getKey('s', 'app');
+        $control = $this->getKey('c', 'index');
+        $action = $this->getKey('a', 'index');
+        return array($service, $control, $action);
+    }
 
+    /**
+     * 获取请求中的参数
+     * @param $key
+     * @param mixed $default
+     * @return string
+     */
+    protected function getKey($key, $default = null) {
+        return isset($this->get[$key]) ? $this->get[$key] : $default;
     }
 
     public function getBody() {

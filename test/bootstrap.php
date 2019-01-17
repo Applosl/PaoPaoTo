@@ -6,6 +6,7 @@
  * Time: 5:28 PM
  */
 
-defined("TEST_ROOT") || define("TEST_ROOT", __DIR__ . '/..');
+defined("TEST_ROOT") || define("TEST_ROOT", __DIR__);
+defined("APP_ROOT") || define("APP_ROOT", TEST_ROOT . DIRECTORY_SEPARATOR . 'App');
 
-require_once TEST_ROOT . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
+require_once TEST_ROOT . DIRECTORY_SEPARATOR . '../vendor/autoload.php';

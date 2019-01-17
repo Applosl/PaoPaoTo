@@ -16,6 +16,4 @@ class RequestHttpHeaderTest extends TestCase {
     public function setUp() {
         $this->request = Request::getInstance();
     }
-
-    public function test
 }

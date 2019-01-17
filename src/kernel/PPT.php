@@ -21,6 +21,7 @@ use PaoPaoTo\kernel\Request\Request;
 class PPT {
     private static $_instance = null; // 自生单例
     protected $request = null; // 请求组件对象
+    protected $route = null; // 路由对象
     protected $response = null; // 响应组件对象
     protected $session = null; // session组件(考虑是不是 变为可选配置项)
 
@@ -49,6 +50,7 @@ class PPT {
         // TODO 检查config变量合法性
         $this->config = array_merge($this->config, $config); // merge config
         $this->request = Request::getInstance();
+        $this->route = new Route();
     }
 
     public function parseConfig() {
@@ -59,11 +61,11 @@ class PPT {
         // TODO 服务结束响应 处理响应的结果 这里需要全局处理异常的问题 以及连续异常 捕获的情况
         // TODO 异常有框架异常 以及PHP本身的异常导致的 这里需要考虑如何处理
         try {
+            $servicePath = $this->request->getServerPath();
 
+            $this->route->generateServer($servicePath);
         } catch (\Exception $e) {
-
-        } finally {
-            return ''; // 返回结果
+            print_r($e->getMessage());
         }
     }
 }
