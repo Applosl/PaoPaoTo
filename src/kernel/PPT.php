@@ -9,7 +9,7 @@
 namespace PaoPaoTo\kernel;
 
 use PaoPaoTo\kernel\Request\Request;
-use PaoPaoTo\kernel\Response\HeaderStatus;
+use PaoPaoTo\kernel\Response\Response;
 
 
 /**
@@ -26,6 +26,9 @@ class PPT {
      */
     public $request = null; // 请求组件对象
     protected $route = null; // 路由对象
+    /**
+     * @var Response
+     */
     public $response = null; // 响应组件对象
     public $session = null; // session组件(考虑是不是 变为可选配置项)
 
@@ -55,18 +58,23 @@ class PPT {
         $this->config = array_merge($this->config, $config); // merge config
         $this->request = Request::getInstance();
         $this->route = new Route();
+        $this->response = Response::getInstance();
     }
 
     public function parseConfig() {
         // TODO 解析config
     }
 
+    /**
+     * 服务响应 这里处理最后的输出结果 模板 异常的处理
+     */
     public function serverResponse() {
         // TODO 服务结束响应 处理响应的结果 这里需要全局处理异常的问题 以及连续异常 捕获的情况
         // TODO 异常有框架异常 以及PHP本身的异常导致的 这里需要考虑如何处理
         try {
             $servicePath = $this->request->getServerPath();
-            $this->route->generateServer($servicePath);
+            $responseData = $this->route->generateServer($servicePath);
+            $this->response->load($responseData);
         } catch (\Exception $e) {
             echo $e->getMessage(); // TODO 异常抛出
         }

@@ -53,11 +53,11 @@ class HeaderStatus {
 
     /**
      * 设置静态对象
-     * @param int $num Http响应码
+     * @param int $StatusCode Http响应码
      * @return bool
      */
-    public static function setHttpStatus($num) {
-        $headerStatusText = isset(self::$HTTP_CODE_MAP[$num]) ? self::$HTTP_CODE_MAP[$num] : false;
+    public static function setHttpStatus($StatusCode) {
+        $headerStatusText = isset(self::$HTTP_CODE_MAP[$StatusCode]) ? self::$HTTP_CODE_MAP[$StatusCode] : false;
         if ($headerStatusText) {
             header($headerStatusText);
             return true;
