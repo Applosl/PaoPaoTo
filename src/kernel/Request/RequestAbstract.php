@@ -17,4 +17,20 @@ abstract class RequestAbstract {
     protected $put = [];
     protected $method;
 
+    abstract public function getHeaders();
+
+    abstract public function getBody();
+
+    abstract public function isAjax();
+
+    abstract public function isGet();
+
+    abstract public function isPost();
+
+    abstract public function isPut();
+
+    abstract public function isDelete();
+
+    abstract public function getMethod();
+
 }

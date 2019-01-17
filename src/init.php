@@ -1,15 +1,18 @@
 <?php
 /**
- * Created by PaoPaoTo.
- * User: pol
+ * 一个初始化的全局函数库 尽量不要添加太多方法
+ * @author : applosl
  * Date: 2019/1/16
- * Time: 4:15 PM
  */
 
 namespace PaoPaoTo;
 
 use PaoPaoTo\kernel\PPT;
 
-function init() {
+/**
+ * 一个生产全局服务对象的函数(单例)
+ * @return PPT
+ */
+function initServer() {
     return PPT::getInstance();
 }
