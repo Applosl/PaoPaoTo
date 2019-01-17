@@ -67,7 +67,7 @@ class PPT {
             $servicePath = $this->request->getServerPath();
             $this->route->generateServer($servicePath);
         } catch (\Exception $e) {
-            print_r($e->getMessage());
+            print_r($e->getMessage()); // TODO 异常抛出
         }
     }
 }
