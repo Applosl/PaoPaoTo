@@ -13,21 +13,28 @@ use PaoPaoTo\kernel\oneInstance;
 class Request extends RequestAbstract implements oneInstance {
 
     private static $_instance = null; // 单例
-    protected $headers = array(); // 请求的头部
-    protected $body = array(); // 请求的body 里面应该是写什么东西
-    protected $get = array(); // get参数
-    protected $post = array(); // post 参数
-    protected $put = array(); // put 参数 扩展支持restful api
-    protected $request = array(); // request 参数
+    protected $headers = null; // 请求的头部
+    protected $body = null; // 请求的body 里面应该是写什么东西
+    protected $get = null; // get参数
+    protected $post = null; // post 参数
+    protected $put = null; // put 参数 扩展支持restful api
+    protected $request = null; // request 参数
     protected $method = ''; // 请求方法参数
 
     /**
      * 解析http headers 参数
      */
     protected function parseHttpHeader() {
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->headers['referer'] = $_SERVER['HTTP_REFERER'];
-        $this->headers['ip'] = $_SERVER['REMOTE_ADDR'];
+        $headers = array();
+        foreach($_SERVER as $name => $value) {
+            if (is_array($value) || substr($name, 0, 5) != 'HTTP_') {
+                continue;
+            }
+            $headerKey = implode('-', array_map('ucwords', explode('_', strtolower(substr($name, 5)))));
+            $headers[$headerKey] = $value;
+        }
+        $this->headers = $headers;
+
     }
 
     /**
@@ -62,8 +69,34 @@ class Request extends RequestAbstract implements oneInstance {
         // 处理所有get开头的函数 需要判断是否有对应的属性名 异常捕获
     }
 
+    /**
+     * 获取所有http request header
+     * 考虑处理所有的返回结果的数据类型 最好保持一致
+     *
+     * @return array|false|null
+     */
     public function getHeaders() {
+        if (function_exists('getallheaders')) {
+            return getallheaders();
+        }
+        // 没有 getallheaders 方法进行处理
         return $this->headers;
+    }
+
+    /**
+     * 获取http request head 参数
+     *
+     * @param string $key header-key
+     * @param mixed $default 默认值
+     *
+     * @return string
+     */
+    public function getHeader($key, $default = null) {
+        if ($this->headers === null) {
+            $this->headers = $this->getHeaders();
+        }
+
+        return isset($this->headers[$key]) ? $this->headers[$key] : $default;
     }
 
     public function getBody() {
