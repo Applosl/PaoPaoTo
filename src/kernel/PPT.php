@@ -9,6 +9,7 @@
 namespace PaoPaoTo\kernel;
 
 use PaoPaoTo\kernel\Request\Request;
+use PaoPaoTo\kernel\Response\HeaderStatus;
 
 
 /**
@@ -67,7 +68,7 @@ class PPT {
             $servicePath = $this->request->getServerPath();
             $this->route->generateServer($servicePath);
         } catch (\Exception $e) {
-            print_r($e->getMessage()); // TODO 异常抛出
+            echo $e->getMessage(); // TODO 异常抛出
         }
     }
 }

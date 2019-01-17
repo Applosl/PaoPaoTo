@@ -6,6 +6,8 @@
 
 namespace PaoPaoTo\kernel\Exception;
 
+use PaoPaoTo\kernel\Response\HeaderStatus;
+
 
 /**
  * Class BadRequestException
@@ -16,5 +18,6 @@ namespace PaoPaoTo\kernel\Exception;
 class BadRequestException extends BaseException {
     public function __construct($message = "", $code = 0) {
         parent::__construct($message, $code);
+        HeaderStatus::setHttpStatus(404); // TODO 不一定是404 返回码
     }
 }
