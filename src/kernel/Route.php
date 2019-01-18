@@ -11,6 +11,10 @@ use PaoPaoTo\kernel\Exception\BadRequestException;
 /**
  * Class Route
  * 路由组件类
+ *
+ * @property Controller $controllerClass 初始的控制类
+ * @property null|int $route 当前的路由模式
+ *
  * @package PaoPaoTo\kernel
  * @author: applosl <121955907@qq.com> 2019/1/17 1:51 PM
  */
@@ -24,31 +28,47 @@ class Route {
         self::MODE_PATH_INFO => 'handlePathInfoMode',
     ];
 
+    // 路由模式配置名称映射表
+    const MODE_CONFIG_NAMES = [
+        'get' => self::MODE_GET,
+        'pathinfo' => self::MODE_PATH_INFO
+    ];
+
     private $serviceName = '';
     private $controlName = '';
     private $actionName = '';
 
-    public $mode = self::MODE_PATH_INFO;
-
+    public $mode = null;
 
     /**
-     * @var Controller
+     * 默认GET模式下GET的参数key
+     * @var array
      */
-    protected $controllerClass = null;
+    private $defaultPathGetKey = [
+        'service_key' => 's',
+        'controller_key' => 'c',
+        'action_key' => 'a'
+    ];
 
-    private $pathInfoMode = true;
+    protected $controllerClass = null;
 
     // 构造函数
     public function __construct(array $config = []) {
         $this->checkConfig($config);
     }
 
-    // TODO 初始化事件 注入时修改再次修改配置文件
+    /**
+     * 初始化事件 注入时修改再次修改配置文件
+     * @param array $config
+     */
     public function onInit(array $config = []) {
         $this->checkConfig($config);
     }
 
-    // TODO 检测配置文件的有效性 如果如果文件异常采取默认配置
+    /**
+     * 检测配置文件的有效性 如果如果文件异常采取默认配置
+     * @param array $config
+     */
     private function checkConfig(array $config) {
         if (!isset($config['service']) || empty($config['service']) || !is_string($config['service'])) {
             $this->serviceName = 'App';
@@ -67,6 +87,32 @@ class Route {
         } else {
             $this->actionName = ucfirst($config['action']);
         }
+
+        // 检查路由模式
+        if (!isset($config['mode']) || empty($config['mode'] || !is_string($config['mode']))) {
+            if (null === $this->mode) {
+                $this->mode = self::MODE_PATH_INFO; // 没有设置模式的情况下 默认设置PATH_INFO模式
+            }
+        } else {
+            if (isset(self::MODE_CONFIG_NAMES[strtolower($config['mode'])])) {
+                $this->mode = self::MODE_CONFIG_NAMES[strtolower($config['mode'])];
+            } else {
+                if (null === $this->mode) {
+                    $this->mode = self::MODE_PATH_INFO; // 没有设置模式的情况下 默认设置PATH_INFO模式
+                }
+            }
+        }
+
+        // 配置GET模式 默认的 键名
+        if ($this->checkArrayKey($config, 'service_key')) {
+            $this->defaultPathGetKey['service_key'] = $config['service_key'];
+        }
+        if ($this->checkArrayKey($config, 'controller_key')) {
+            $this->defaultPathGetKey['controller_key'] = $config['controller_key'];
+        }
+        if ($this->checkArrayKey($config, 'action_key')) {
+            $this->defaultPathGetKey['action_key'] = $config['action_key'];
+        }
     }
 
     /**
@@ -82,9 +128,16 @@ class Route {
      * @return array
      */
     private function handleGetMode() {
-        $service = $this->getGetKey('s', $this->serviceName);
-        $control = $this->getGetKey('c', $this->controlName);
-        $action = $this->getGetKey('a', $this->actionName);
+        $service = $this->getGetKey($this->defaultPathGetKey['service_key'], $this->serviceName);
+        $control = $this->getGetKey($this->defaultPathGetKey['controller_key'], $this->controlName);
+        $action = $this->getGetKey($this->defaultPathGetKey['action_key'], $this->actionName);
+
+        /**
+         * 移除这些参数
+         */
+        foreach($this->defaultPathGetKey as $val) {
+            unset($_GET[$val]);
+        }
         return array($service, $control, $action);
     }
 
@@ -133,5 +186,18 @@ class Route {
             return $_GET[$key];
         }
         return $default;
+    }
+
+    /**
+     * 检查 数组键是否存在 并且是不为空的字符串
+     * @param array $arr
+     * @param $value
+     * @return bool
+     */
+    protected function checkArrayKey(array $arr, $value) {
+        if (isset($arr[$value]) && is_string($value) && !empty($value)) {
+            return true;
+        }
+        return false;
     }
 }

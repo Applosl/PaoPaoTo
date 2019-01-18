@@ -15,7 +15,6 @@ class Request extends RequestAbstract implements oneInstance {
     private static $_instance = null; // 单例
     protected $headers = null; // 请求的头部
     protected $body = null; // 请求的body 里面应该是写什么东西
-    protected $get = null; // get参数
     protected $post = null; // post 参数
     protected $put = null; // put 参数 扩展支持restful api
     protected $request = null; // request 参数
@@ -116,15 +115,15 @@ class Request extends RequestAbstract implements oneInstance {
     }
 
     public function getParams() {
-        return $this->get;
+        return $_GET;
     }
 
     public function postParams() {
-        return $this->post;
+        return $_POST;
     }
 
     public function putParams() {
-        return $this->put;
+        return $_REQUEST;
     }
 
     public function isAjax() {
