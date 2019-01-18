@@ -35,16 +35,23 @@ class Request extends RequestAbstract implements oneInstance {
             $headers[$headerKey] = $value;
         }
         $this->headers = $headers;
+    }
 
+    /**
+     * 解析 http method 参数
+     */
+    protected function parseHttpMethod() {
+        $this->method = strtolower($_SERVER['REQUEST_METHOD'] ?? '');
     }
 
     /**
      * 解析http 普通参数
      */
     protected function parseHttpParams() {
-        $this->get = $_GET;
-        $this->post = $_POST;
-        $this->request = $_REQUEST;
+        $this->get = &$_GET;
+        $this->post = &$_POST;
+        $this->request = &$_REQUEST;
+        // TODO 未来需要考虑接受 PUT 和 PATCH DELETE等 http1.1的方法
     }
 
     /**
@@ -62,7 +69,9 @@ class Request extends RequestAbstract implements oneInstance {
      */
     public function __construct() {
         $this->parseHttpHeader();
+        $this->parseHttpMethod();
         $this->parseHttpParams();
+
     }
 
     // TODO 这里是否可以简化获取对象属性的方法 请求的参数 不应该被修改 这里先弄成只读
@@ -115,15 +124,15 @@ class Request extends RequestAbstract implements oneInstance {
     }
 
     public function getParams() {
-        return $_GET;
+        return $this->get;
     }
 
     public function postParams() {
-        return $_POST;
+        return $this->post;
     }
 
     public function putParams() {
-        return $_REQUEST;
+        return $this->put;
     }
 
     public function isAjax() {
