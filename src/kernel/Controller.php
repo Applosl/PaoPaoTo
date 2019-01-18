@@ -17,9 +17,13 @@ class Controller {
     protected $actionName = '';
 
     // TODO 为了简化其控制器的操作 这里可以简单将封装几个简单的Request的属性 考虑性能 看是否需要用引用
-
+    /**
+     * 初始化 参数注入 方法调用
+     * @param $actionName
+     * @return mixed
+     */
     public function init($actionName) {
         $this->actionName = $actionName;
-        $this->$actionName();
+        return $this->$actionName();
     }
 }

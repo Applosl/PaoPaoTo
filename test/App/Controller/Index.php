@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use PaoPaoTo\kernel\Controller;
@@ -11,6 +12,6 @@ use PaoPaoTo\kernel\Controller;
  */
 class Index extends Controller {
     public function Index() {
-        echo 'Hello World!';
+        return "hello world";
     }
 }

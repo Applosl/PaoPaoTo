@@ -25,7 +25,8 @@ class Route {
 
     /**
      * 生成服务
-     * @param array $servicePath 服务路由
+     * @param $servicePath 服务路由
+     * @return mixed
      * @throws BadRequestException
      */
     public function generateServer($servicePath) {

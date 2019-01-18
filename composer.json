@@ -10,18 +10,18 @@
     }
   ],
   "require": {
-    "php": ">=5.5.0"
+    "php": ">=7.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^7"
   },
   "autoload": {
-    "files":[
+    "files": [
       "src/init.php"
     ],
     "psr-4": {
       "PaoPaoTo\\": "src/",
-      "App\\":"test/App/"
+      "App\\": "test/App/"
     }
   }
 }

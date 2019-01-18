@@ -76,7 +76,7 @@ class PPT {
             $responseData = $this->route->generateServer($servicePath);
             $this->response->load($responseData);
         } catch (\Exception $e) {
-            echo $e->getMessage(); // TODO 异常抛出
+            echo $e->getMessage(); // TODO 异常抛出 服务响应出错
         }
     }
 }
