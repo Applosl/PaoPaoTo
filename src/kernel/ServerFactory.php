@@ -8,15 +8,15 @@ use PaoPaoTo\kernel\Exception\BadRequestException;
 
 /**
  * Class ServerFactory
- * 服务工厂组装一系列服务
+ * 服务工厂
  * @package PaoPaoTo\kernel
  * @author: applosl <121955907@qq.com> 2019/1/18 11:24 AM
  */
 class ServerFactory {
 
-
     /**
-     * 服务创建工厂
+     * 服务创建工厂 处理一系列复杂的 服务模块 控制器 方法的检测
+     * 及 初始化 服务的初始执行控制器及方法
      * @param PPT $server
      * @return PPT
      * @throws Exception\BadRequestException
