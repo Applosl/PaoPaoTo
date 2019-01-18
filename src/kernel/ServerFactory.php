@@ -26,17 +26,17 @@ class ServerFactory {
         list($serviceName, $controlName, $actionName) = $servicePath;
 
         if (empty($serviceName)) {
-            throw new BadRequestException('错误的服务模块');
+            throw new BadRequestException('错误的服务模块', 404);
         }
         if (empty($controlName) || empty($actionName)) {
-            throw new BadRequestException('错误的控制名 或 方法名');
+            throw new BadRequestException('错误的控制名 或 方法名', 404);
         }
 
         // 检查是否含有对应的控制器
         $controlClassName = '\\' . ucfirst($serviceName) . '\\Controller\\' . ucfirst($controlName);
 
         if (!class_exists($controlClassName)) {
-            throw new BadRequestException('找不到对应的控制器名');
+            throw new BadRequestException('找不到对应的控制器名', 404);
         }
 
         $controllerClass = new $controlClassName();
@@ -45,7 +45,7 @@ class ServerFactory {
                 $controllerClass,
                 $actionName
             ))) {
-            throw new BadRequestException('找不到对应的方法名');
+            throw new BadRequestException('找不到对应的方法名', 404);
         }
 
         $server->setInitController($controllerClass);
