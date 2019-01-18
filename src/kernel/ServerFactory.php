@@ -3,7 +3,6 @@
 
 namespace PaoPaoTo\kernel;
 
-use function PaoPaoTo\initServer;
 use PaoPaoTo\kernel\Exception\BadRequestException;
 
 

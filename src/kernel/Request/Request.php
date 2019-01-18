@@ -8,7 +8,6 @@
 
 namespace PaoPaoTo\kernel\Request;
 
-use PaoPaoTo\kernel\Exception\BadRequestException;
 use PaoPaoTo\kernel\oneInstance;
 
 class Request extends RequestAbstract implements oneInstance {
