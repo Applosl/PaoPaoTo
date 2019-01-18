@@ -23,44 +23,46 @@ class Route {
      */
     protected $controllerClass = null;
 
-    /**
-     * 生成服务
-     * @param $servicePath 服务路由
-     * @return mixed
-     * @throws BadRequestException
-     */
-    public function generateServer($servicePath) {
-        list($this->serviceName, $this->controlName, $this->actionName) = $servicePath;
-        $this->checkPath();
-        return $this->controllerClass->init($this->actionName);
-    }
+    private $pathInfoMode = true;
 
     /**
-     * 检查路由异常情况
+     * 返回服务的路由
+     * @return array [service,control,action]
      * @throws BadRequestException
      */
-    public function checkPath() {
-        if (empty($this->serviceName)) {
-            throw new BadRequestException('错误的服务模块');
-        }
-        if (empty($this->controlName) || empty($this->actionName)) {
-            throw new BadRequestException('错误的控制名 或 方法名');
-        }
+    public function getServerPath() {
+        // PathInfo 模式开启
+        $requestUri = substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?'));
+        $pathInfoArr = array_values(array_filter(explode('/', $requestUri)));
 
-        // 检查是否含有对应的控制器
-        $controlClassName = '\\' . ucfirst($this->serviceName) . '\\Controller\\' . ucfirst($this->controlName);
+        $service = 'App'; // 默认服务模块名 TODO 可配置
+        $control = 'index'; // 默认控制器名 TODO 可配置
+        $action = 'index'; // 默认方法名 TODO 可配置
 
-        if (!class_exists($controlClassName)) {
-            throw new BadRequestException('找不到对应的控制器名');
+        // TODO 看有没有更优雅的方式处理这段程序
+        switch (count($pathInfoArr)) {
+            case 3:
+                list($service, $control, $action) = $pathInfoArr;
+                break;
+            case 2:
+                list($service, $control, $action) = [$service, $pathInfoArr[0], $pathInfoArr[1]];
+                break;
+            case 1:
+                list($service, $control, $action) = [$service, $control, $pathInfoArr[0]];
+                break;
+            case 0:
+                list($service, $control, $action) = [$service, $control, $action];
+                break;
+            default:
+                throw new BadRequestException('错误的请求');
         }
-
-        $this->controllerClass = new $controlClassName();
-        // 检查是否含有对应的方法
-        if (!method_exists($this->controllerClass, $this->actionName) || !is_callable(array(
-                $this->controllerClass,
-                $this->actionName
-            ))) {
-            throw new BadRequestException('找不到对应的方法名');
-        }
+//        if ($this->pathInfoMode) {
+//
+//        } else {
+//            $service = $this->getKey('s', 'app');
+//            $control = $this->getKey('c', 'index');
+//            $action = $this->getKey('a', 'index');
+//        }
+        return array($service, $control, $action);
     }
 }
