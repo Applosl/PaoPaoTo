@@ -30,7 +30,10 @@ class PPT {
     public $response = null; // 响应组件对象
     public $session = null; // session组件(考虑是不是 变为可选配置项)
 
-    private $componentHitTimes = []; // 组件命中次数
+    public $componentPools = []; // 组件注册池
+    public $componentHitTimes = []; // 组件命中次数
+
+
     private $initController = null; // 初始化controller
     private $initAction = ''; // 初始化方法名
 
@@ -78,11 +81,13 @@ class PPT {
         $this->onInit();
     }
 
+    // 初始化事件方法
     public function onInit() {
         $this->request = Request::getInstance();
         $this->route = new Route(); // ?多个路由对象
         $this->response = Response::getInstance();
     }
+
 
     public function parseConfig() {
         // TODO 解析config
@@ -100,7 +105,7 @@ class PPT {
     /**
      * 服务响应 这里处理最后的输出结果 模板 异常的处理
      */
-    public function serverResponse() {
+    public function run() {
         // TODO 服务结束响应 处理响应的结果 这里需要全局处理异常的问题 以及连续异常 捕获的情况
         // TODO 异常有框架异常 以及PHP本身的异常导致的 这里需要考虑如何处理
         try {

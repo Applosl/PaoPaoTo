@@ -8,4 +8,4 @@
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 $server = \PaoPaoTo\initServer(); // 初始化服务对象
-$server->serverResponse(); // 响应结果
+$server->run();

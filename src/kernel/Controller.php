@@ -13,7 +13,6 @@ namespace PaoPaoTo\kernel;
  * @author: applosl <121955907@qq.com> 2019/1/17 2:17 PM
  */
 class Controller {
-    protected $controllerName = '';
     protected $actionName = '';
 
     // TODO 为了简化其控制器的操作 这里可以简单将封装几个简单的Request的属性 考虑性能 看是否需要用引用
@@ -25,5 +24,21 @@ class Controller {
     public function init($actionName) {
         $this->actionName = $actionName;
         return $this->$actionName();
+    }
+
+    /**
+     * 获取当前控制器名
+     * @return bool|string
+     */
+    public function getControllerName() {
+//        return substr(static::class, strrpos(static::class, '\\')+1);
+    }
+
+    /**
+     * 获取方法名
+     * @return string
+     */
+    public function getActionName(){
+        return $this->actionName;
     }
 }

@@ -52,4 +52,9 @@ class ServerFactory {
         $server->setInitAction($actionName);
         return $server;
     }
+
+    // 给服务注入组件服务
+    public static function registerComponent(PPT $server) {
+
+    }
 }

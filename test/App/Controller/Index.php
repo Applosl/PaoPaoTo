@@ -12,6 +12,6 @@ use PaoPaoTo\kernel\Controller;
  */
 class Index extends Controller {
     public function Index() {
-        return "hello world";
+        return $this->getActionName();
     }
 }
