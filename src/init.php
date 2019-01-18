@@ -7,6 +7,7 @@
 
 namespace PaoPaoTo;
 
+use PaoPaoTo\kernel\Debug\Consume;
 use PaoPaoTo\kernel\PPT;
 
 /**
@@ -14,5 +15,8 @@ use PaoPaoTo\kernel\PPT;
  * @return PPT
  */
 function initServer() {
+    if(DEBUG_MODE){
+        Consume::setStart();
+    }
     return PPT::getInstance();
 }

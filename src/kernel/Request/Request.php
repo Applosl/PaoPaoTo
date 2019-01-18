@@ -10,6 +10,11 @@ namespace PaoPaoTo\kernel\Request;
 
 use PaoPaoTo\kernel\oneInstance;
 
+/**
+ * Class Request
+ * @package PaoPaoTo\kernel\Request
+ * @author: applosl <121955907@qq.com> 2019/1/18 3:54 PM
+ */
 class Request extends RequestAbstract implements oneInstance {
 
     private static $_instance = null; // 单例

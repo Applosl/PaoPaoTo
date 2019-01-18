@@ -2,6 +2,7 @@
 
 namespace PaoPaoTo\kernel;
 
+use PaoPaoTo\kernel\Debug\Consume;
 use PaoPaoTo\kernel\Exception\BaseException;
 use PaoPaoTo\kernel\Request\Request;
 use PaoPaoTo\kernel\Response\Response;
@@ -116,6 +117,12 @@ class PPT {
             echo $e->getMessage(); // TODO 异常抛出 服务出错
         } catch (\Exception $e) {
             echo $e->getMessage(); // TODO 异常抛出 PHP出错
+        }
+
+        if (DEBUG_MODE) {
+            // 开启Debug模式
+            Consume::setEnd();
+            Consume::consumingTime();
         }
 
     }
