@@ -54,7 +54,22 @@ class ServerFactory {
     }
 
     // 给服务注入组件服务
-    public static function registerComponent(PPT $server) {
+    public static function registerComponent(PPT $server, string $componentPoolsName) {
+        if (!isset($server->componentPools[$componentPoolsName])) {
+            if (!class_exists($componentPoolsName, false)) {
+                $server->componentPools[$componentPoolsName] = null;
+                $server->componentHitTimes[$componentPoolsName] = 0;
+                $server->componentHitTimes[$componentPoolsName]++;
+            }
+        }
 
+        if(isset($server->componentHitTimes[$componentPoolsName])){
+            if($server->componentHitTimes[$componentPoolsName]=== 1){
+                $server->activeComponentInit($componentPoolsName);
+                $server->componentPools[$componentPoolsName] = $server->$componentPoolsName;
+            }
+        }
+
+        return $server;
     }
 }

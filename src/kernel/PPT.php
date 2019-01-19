@@ -95,11 +95,49 @@ class PPT {
     }
 
     /**
+     * 获取组件对象
+     * @param $key
+     * @return mixed
+     */
+    public function __get($key) {
+        if (!isset($this->componentHitTimes[$key])) {
+            $this->componentHitTimes[$key] = 0;
+        }
+        $this->componentHitTimes[$key]++;
+
+        if ($this->componentHitTimes[$key] == 1) {
+            $this->componentPools[$key] = $this->activeComponentInit($key);
+        }
+        return $this->componentHitTimes[$key];
+    }
+
+    /**
      * 生成服务
      * @return mixed
      */
     public function generateServer() {
         return $this->initController->init($this->initAction);
+    }
+
+    /**
+     * 激活组件服务init事件
+     * @param $componentPoolsName
+     * @return mixed|null|string
+     */
+    public function activeComponentInit($componentPoolsName) {
+        $rs = NULL;
+
+        if ($componentPoolsName instanceOf \Closure) {
+            $rs = $componentPoolsName();
+        } elseif (is_string($componentPoolsName) && class_exists($componentPoolsName)) {
+            $rs = new $componentPoolsName();
+            if (is_callable(array($rs, 'onInit'))) {
+                call_user_func(array($rs, 'onInit'));
+            }
+        } else {
+            $rs = $componentPoolsName;
+        }
+        return $rs;
     }
 
 
@@ -124,6 +162,5 @@ class PPT {
             Consume::setEnd();
             Consume::consumingTime();
         }
-
     }
 }
