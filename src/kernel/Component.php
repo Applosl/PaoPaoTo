@@ -20,4 +20,17 @@ abstract class Component {
     public function onInit() {
         // TODO 子类继承实现
     }
+
+    /**
+     * 加载数据配置 给 属性
+     * @param array $data
+     */
+    public function onSetConfig(array $data) {
+        foreach($data as $name => $value) {
+            if (property_exists(static::class, $name)) {
+                $this->$name = $value;
+            }
+        }
+
+    }
 }

@@ -80,15 +80,17 @@ class PPT {
         // TODO 检查config变量合法性
         $this->config = array_merge($this->config, $config); // merge config
         $this->onInit();
+        $this->parseConfig();
     }
 
-    // 初始化事件方法
+    /**
+     * 初始化事件方法
+     */
     public function onInit() {
-        $this->request = Request::getInstance();
-        $this->route = new Route(); // ?多个路由对象
-        $this->response = Response::getInstance();
+        $this->request = '\\PaoPaoTo\\kernel\\Request\\Request';
+        $this->route = "\\PaoPaoTo\\kernel\\Route";
+        $this->response = '\\PaoPaoTo\\kernel\\Response\\Response';
     }
-
 
     public function parseConfig() {
         // TODO 解析config
@@ -109,6 +111,24 @@ class PPT {
             $this->componentPools[$key] = $this->activeComponentInit($key);
         }
         return $this->componentHitTimes[$key];
+    }
+
+    /**
+     * 初始设置注入组件
+     * @param $name
+     * @param $value
+     * @return bool
+     */
+    public function __set($name, $value) {
+        if (isset($this->componentPools[$name])) {
+            return false;
+        }
+        $this->componentHitTimes[$name] = 0;
+        $this->componentHitTimes[$name]++;
+        if ($this->componentHitTimes[$name] === 1) {
+            $this->componentPools[$name] = $this->activeComponentInit($value);
+        }
+
     }
 
     /**
