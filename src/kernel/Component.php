@@ -17,9 +17,7 @@ abstract class Component {
     /**
      * 对象初始化事件
      */
-    public function onInit() {
-        // TODO 子类继承实现
-    }
+    abstract public function onInit();
 
     /**
      * 加载数据配置 给 属性

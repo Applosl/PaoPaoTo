@@ -9,15 +9,15 @@ namespace PaoPaoTo\kernel;
  * 服务参数配置解析器类
  * 用于解决配置的 导入 解析 设置初始化 组件配置的 转移
  *
- * @property null|array $configData 配置数据
+ * @property array $configData 配置数据
  * @property array $components 组件配置数据
  *
  * @package PaoPaoTo\kernel
  * @author: applosl <121955907@qq.com> 2019/1/20 2:25 PM
  */
-class ParseConfig {
+class ParseConfig extends Component {
 
-    private $configData = null; // 配置数据
+    private $configData = array(); // 配置数据
     private $components = array(); // 组件池
 
     /**
@@ -32,11 +32,27 @@ class ParseConfig {
     }
 
     /**
+     * 注册初始化事件
+     */
+    public function onInit() {
+        $this->loadConfig();
+    }
+
+
+    /**
      * 获取配置
-     * @return null
+     * @return array
      */
     public function getConfig() {
         return $this->configData;
+    }
+
+    /**
+     * 获取
+     * @return array
+     */
+    public function getComponentsConfig() {
+        return $this->components;
     }
 
     /**
@@ -67,10 +83,4 @@ class ParseConfig {
         }
         return true;
     }
-
-    // TODO 组件配置注册
-    public function componentsConfigRegister() {
-
-    }
-
 }
