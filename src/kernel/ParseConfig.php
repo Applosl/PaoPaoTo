@@ -78,7 +78,6 @@ class ParseConfig extends Component {
      */
     private function safeCheck($data) {
         if (!is_array($data)) {
-            $data = $this->configData;
             return false;
         }
         return true;

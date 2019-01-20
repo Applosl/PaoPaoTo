@@ -4,6 +4,7 @@ namespace PaoPaoTo\kernel;
 
 use PaoPaoTo\kernel\Debug\Consume;
 use PaoPaoTo\kernel\Exception\BaseException;
+use PaoPaoTo\kernel\Exception\InternalServerException;
 use PaoPaoTo\kernel\Request\Request;
 use PaoPaoTo\kernel\Response\Response;
 
@@ -15,6 +16,7 @@ use PaoPaoTo\kernel\Response\Response;
  * @property Request $request 请求组件
  * @property Response $response 响应组件
  * @property Route $route 路由组件
+ * @property ParseConfig $configParse 配置解析对象
  *
  * @property array $componentHitTimes 组件命中次数
  * @property Controller $initController 初始控制器
@@ -29,15 +31,14 @@ class PPT {
     public $request = null; // 请求组件对象
     public $route = null; // 路由对象
     public $response = null; // 响应组件对象
+    public $configParse = null; // 配置解析对象
     public $session = null; // session组件(考虑是不是 变为可选配置项)
 
     public $componentPools = []; // 组件注册池
     public $componentHitTimes = []; // 组件命中次数
 
-
     private $initController = null; // 初始化controller
     private $initAction = ''; // 初始化方法名
-
 
     /**
      * 由外部文件载入,需要检查其合法性，抑制错误异常
@@ -80,7 +81,7 @@ class PPT {
         // TODO 检查config变量合法性
         $this->config = array_merge($this->config, $config); // merge config
         $this->onInit();
-        $this->parseConfig();
+        $this->loadConfig();
     }
 
     /**
@@ -90,10 +91,18 @@ class PPT {
         $this->request = '\\PaoPaoTo\\kernel\\Request\\Request';
         $this->route = "\\PaoPaoTo\\kernel\\Route";
         $this->response = '\\PaoPaoTo\\kernel\\Response\\Response';
+        $this->configParse = '\\PaoPaoTo\\kernel\\ConfigParse';
     }
 
-    public function parseConfig() {
-        // TODO 解析config
+    /**
+     * 加载配置文件
+     * @throws InternalServerException
+     */
+    public function loadConfig() {
+        if (null === $this->configParse) {
+            throw new InternalServerException('服务配置解析模块加载失败');
+        }
+        $this->configParse->getConfig();
     }
 
     /**
